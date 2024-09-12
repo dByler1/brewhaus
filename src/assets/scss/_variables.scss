@@ -1,0 +1,19 @@
+// colors
+$background: rgb(254, 251, 233);
+$light-highlight: rgb(252, 242, 196);
+$dark-highlight: rgb(248, 228, 138);
+$darker-highlight: rgb(184, 131, 39);
+$text-secondary: rgb(157, 80, 29);
+$danger: rgb(253, 245, 67);
+$success: rgb(168, 210, 107);
+$black: #010100;
+$cream: #f9f6f0;
+$beige: #6f5b3e;
+$pewter: #8e8a92;
+$dark-grey: #5a5e68;
+
+// font
+$font-family: 'Lato', sans-serif;
+$font-size: 1rem !default; // Assumes the browser default, typically `16px`
+$font-weight: 400 !default;
+$text-color: $black !default;

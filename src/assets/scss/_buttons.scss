@@ -1,0 +1,11 @@
+button.primary {
+  @include button-var('primary');
+}
+
+button.outline {
+  @include button-var('outline');
+}
+
+button.round {
+  @include button-var('round');
+}

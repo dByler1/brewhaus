@@ -1,5 +1,7 @@
 # brewhaus
 
+Note: you will need a .env file with TomTom api key
+
 Features of this website should include:
 
     - Main page listing out breweries
@@ -9,11 +11,17 @@ Features of this website should include:
 
 Planning:
 
-- App config: router, state management, typescript, ui library
-- layout: header, main, footer
-- brewery fetch, lazy load/pagination
+- App config: router, state management, typescript, ui styles setup
+- layout: header, main
+- brewery fetch, lazy load
+  - pagination seemed like too many controls so i opted for lazy load
+  - i added an option to get breweries close to user location
 - detail page
-- embellish: add a favorites option where the user can favorite several breweries
+  - added a tomtom api endpoint to fetch directions if the necessary data is present
+
+Bugs:
+
+- ref is not defined when cleaning up the scroll event/callback in BreweryList
 
 ## Project Setup
 

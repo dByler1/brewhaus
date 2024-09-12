@@ -1,0 +1,15 @@
+a {
+  color: $text-secondary;
+  padding: 10px;
+
+  &:hover {
+    color: darken($text-secondary, 10%);
+    background-color: $light-highlight;
+  }
+
+  &:active,
+  &:focus {
+    color: darken($text-secondary, 20%);
+    background-color: $dark-highlight;
+  }
+}

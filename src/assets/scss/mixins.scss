@@ -1,0 +1,75 @@
+@mixin button-var($variant) {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  font-family: $font-family;
+  border-radius: 3px;
+  padding: 10px;
+  min-width: unset;
+  width: 100%;
+  text-decoration: none;
+  line-height: 1.6875em;
+  transition: all 0.1s ease-in-out;
+
+  @if $variant == 'primary' {
+    background: $darker-highlight;
+    border: 1px solid $darker-highlight;
+    color: $cream;
+    font-weight: 400;
+  } @else if $variant == 'outline' {
+    background: $cream;
+    border: 1px solid $cream;
+    color: $black;
+    font-weight: 400;
+  } @else if $variant == 'round' {
+    background: $cream;
+    border: 1px solid $black;
+    border-radius: 20px;
+    width: unset;
+  }
+
+  &:hover {
+    @if $variant == 'primary' {
+      background: darken($darker-highlight, 5%);
+    } @else if $variant == 'outline' or $variant == 'round' {
+      background: darken($cream, 5%);
+    }
+
+    cursor: pointer;
+  }
+
+  &:active,
+  &:disabled {
+    @if $variant == 'primary' {
+      background: darker($darker-highlight, 10%);
+    } @else if $variant == 'outline' or $variant == 'round' {
+      background: darken($cream, 10%);
+    }
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+    padding: 10px;
+    border: 1px;
+  }
+
+  @media screen and (min-width: 768px) {
+    width: unset;
+
+    @if $variant == 'primary' or $variant == 'outline' {
+      min-width: 250px;
+    }
+  }
+}
+
+@mixin text-var($font-size-desktop, $font-size-mobile, $font-weight) {
+  font-family: $font-family;
+  font-size: $font-size-mobile;
+  color: $black;
+  font-weight: $font-weight;
+
+  @media screen and (min-width: 768px) {
+    font-size: $font-size-desktop;
+  }
+}

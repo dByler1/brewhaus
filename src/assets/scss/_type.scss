@@ -1,0 +1,43 @@
+* {
+  font-family: $font-family;
+}
+h1,
+.heading-one {
+  @include text-var(2rem, 1.8rem, 700);
+}
+
+h2,
+.heading-two {
+  @include text-var(1.8rem, 1.6rem, 700);
+}
+
+h3,
+.heading-three {
+  @include text-var(1.6rem, 1.4rem, 700);
+}
+
+p,
+.paragraph {
+  @include text-var(1rem, 1rem, 400);
+}
+
+.p-small {
+  @include text-var(0.8rem, 0.8rem, 400);
+}
+
+strong,
+.bold {
+  font-weight: 700;
+}
+
+.light {
+  font-weight: 300;
+}
+
+.danger {
+  color: $danger;
+}
+
+.success {
+  color: $success;
+}

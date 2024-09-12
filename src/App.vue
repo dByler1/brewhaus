@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
+import { RouterView } from 'vue-router'
+import HeaderComponent from '@/components/HeaderComponent.vue'
 </script>
 
 <template>
   <div class="application-container">
-    <header>
-      <img alt="Vue logo" class="logo" src="@/assets/beer-mug.svg" width="125" height="125" />
-
-      <div class="wrapper">
-        <HelloWorld msg="You did it!" />
-
-        <nav>
-          <RouterLink to="/">Home</RouterLink>
-          <RouterLink to="/about">About</RouterLink>
-        </nav>
-      </div>
-    </header>
-
-    <RouterView />
+    <HeaderComponent />
+    <main id="main">
+      <RouterView />
+    </main>
   </div>
 </template>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .application-container {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  text-align: center;
+  display: flex;
+  flex-direction: column;
+  background-color: $background;
+  min-height: 100vh;
+
+  main {
+    padding: 0 15px;
+    max-width: $xl-breakpoint;
+    width: 100%;
+    margin: 0 auto;
+  }
 }
 </style>
