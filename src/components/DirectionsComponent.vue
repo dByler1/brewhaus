@@ -52,7 +52,7 @@ function getLocation() {
 }
 
 const showDirectionsBlock = computed(() => {
-  return store.location && props.brewery.latitude && props.brewery.longitude
+  return props.brewery.latitude && props.brewery.longitude
 })
 
 if (showDirectionsBlock.value) {
