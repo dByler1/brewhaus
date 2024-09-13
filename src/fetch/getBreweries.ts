@@ -44,7 +44,7 @@ export const fetchBrewery = async (id: string): Promise<Brewery | string> => {
 
 export const fetchSearchBreweries = (query: string): Promise<Brewery[] | string> => {
   return new Promise((resolve, reject) => {
-    const url = `https://api.openbrewerydb.org/v1/breweries/search?query=${query}`
+    const url = `https://api.openbrewerydb.org/v1/breweries/autocomplete?query=${query}`
 
     fetch(url)
       .then(function (response) {

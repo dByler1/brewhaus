@@ -12,10 +12,23 @@ export const useBreweriesStore = defineStore('breweries', () => {
   const options = ref({ page: 1, per_page: 50, by_type: '' })
   const state = ref({ loading: false, error: '' })
   const location = ref<Location | undefined>(undefined)
+  const types = ref([
+    { label: 'Micro', value: 'micro' },
+    { label: 'Nano', value: 'nano' },
+    { label: 'Regional', value: 'regional' },
+    { label: 'Brewpub', value: 'brewpub' },
+    { label: 'Large', value: 'large' },
+    { label: 'Planning', value: 'planning' },
+    { label: 'Bar', value: 'bar' },
+    { label: 'Contract', value: 'contract' },
+    { label: 'Proprietor', value: 'proprietor' },
+    { label: 'Closed', value: 'closed' }
+  ])
 
   function getBreweries() {
     state.value.loading = true
     state.value.error = ''
+    console.log('fetching', breweries.value)
     fetchBreweries({
       location: location.value,
       page: options.value.page,
@@ -52,6 +65,7 @@ export const useBreweriesStore = defineStore('breweries', () => {
     breweries.value = []
     counts.value.total = 0
     counts.value.received = 0
+    options.value.by_type = ''
   }
   function setBreweries(newBreweries: Brewery[]) {
     breweries.value = newBreweries
@@ -68,6 +82,7 @@ export const useBreweriesStore = defineStore('breweries', () => {
     options,
     state,
     location,
+    types,
     getBreweries,
     setPage,
     setPerPage,

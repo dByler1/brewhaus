@@ -2,6 +2,7 @@
 import { computed, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { fetchBrewery } from '@/fetch/getBreweries'
+import { fetchLocation, fetchPoi } from '@/fetch/getLocations'
 import type { Brewery } from '@/types/breweries'
 import LoadingSpinner from '@/components/LoadingSpinner.vue'
 import DirectionsComponent from '@/components/DirectionsComponent.vue'
@@ -10,17 +11,24 @@ const route = useRoute()
 const brewery = ref<Brewery | null>()
 const loading = ref(false)
 const error = ref(null)
+const encodedAddress = ref('')
 
 // watch the params of the route to fetch the data again
 watch(
   () => route.params.id,
   () => {
-    fetchData(route.params.id as string)
+    getBrewery(route.params.id as string)
   },
   { immediate: true }
 )
 
-function fetchData(id: string) {
+function encodeAddress(brewery: Brewery) {
+  encodedAddress.value = encodeURIComponent(
+    `${brewery.street}, ${brewery.city}, ${brewery.state} ${brewery.postal_code}`
+  )
+}
+
+function getBrewery(id: string) {
   error.value = null
   loading.value = true
 
@@ -28,6 +36,7 @@ function fetchData(id: string) {
     .then((data) => {
       if (typeof data !== 'string') {
         brewery.value = data
+        encodeAddress(data)
       }
     })
     .catch((err) => {
@@ -39,7 +48,7 @@ function fetchData(id: string) {
 }
 
 const formattedPhone = computed(() => {
-  if (brewery.value) {
+  if (brewery.value && brewery.value.phone) {
     return brewery.value.phone.replace(/(\d{3})(\d{3})(\d{4})/, '($1) $2-$3')
   } else {
     return ''

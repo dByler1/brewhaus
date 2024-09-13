@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, defineProps, computed } from 'vue'
 import type { Brewery } from '@/types/breweries'
-import { fetchDirections } from '@/fetch/getDirections'
+import { fetchDirections } from '@/fetch/getLocations'
 import { useBreweriesStore } from '@/stores/breweries'
 import LoadingSpinner from './LoadingSpinner.vue'
 

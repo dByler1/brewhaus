@@ -12,7 +12,11 @@ function scrollCb() {
   //only get more if we haven't reached the end of the list and we're not already loading
   const loadMoreStatus = store.counts.received < store.counts.total && !store.state.loading
 
-  if (loadMoreStatus && listRef.value!.getBoundingClientRect().bottom < window.innerHeight) {
+  if (
+    loadMoreStatus &&
+    listRef.value &&
+    listRef.value.getBoundingClientRect().bottom < window.innerHeight
+  ) {
     store.setPage(store.options.page + 1)
     store.getBreweries()
   }
@@ -32,6 +36,7 @@ onUnmounted(() => {
     <li v-for="brewery in store.breweries" :key="brewery.id">
       <span class="title">{{ brewery.name }}</span>
       <span class="location">{{ brewery.city }}, {{ brewery.city }} {{ brewery.country }}</span>
+      <span>{{ brewery.brewery_type }}</span>
       <RouterLink class="action" :to="{ name: 'brewery', params: { id: brewery.id } }">
         More Details
       </RouterLink>
@@ -64,8 +69,7 @@ onUnmounted(() => {
     font-weight: bold;
   }
 
-  .title,
-  .location {
+  span {
     padding: 5px 10px;
   }
 
