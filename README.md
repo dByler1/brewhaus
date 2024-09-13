@@ -2,6 +2,11 @@
 
 Note: you will need a .env file with TomTom api key
 
+hosted on github pages
+
+- npm run build
+- git subtree push --prefix dist origin gh-pages
+
 Features of this website should include:
 
     - Main page listing out breweries
