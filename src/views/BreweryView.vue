@@ -59,8 +59,14 @@ const formattedPhone = computed(() => {
         <p class="address-line-2">
           {{ brewery.city }}, {{ brewery.state }} {{ brewery.postal_code }}
         </p>
-        <a :href="brewery.phone">{{ formattedPhone }}</a>
-        <a :href="brewery.website_url" rel="noopener noreferrer" target="_blank">Website</a>
+        <a v-if="brewery.phone" :href="brewery.phone">{{ formattedPhone }}</a>
+        <a
+          v-if="brewery.website_url"
+          :href="brewery.website_url"
+          rel="noopener noreferrer"
+          target="_blank"
+          >Website</a
+        >
       </address>
       <DirectionsComponent :brewery="brewery" />
     </div>

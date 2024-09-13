@@ -2,9 +2,12 @@
 
 Note: you will need a .env file with TomTom api key
 
-hosted on github pages
+hosted on github pages [https://dbyler1.github.io/brewhaus/](https://dbyler1.github.io/brewhaus/)
+
+to deploy to gh pages
 
 - npm run build
+- push
 - git subtree push --prefix dist origin gh-pages
 
 Features of this website should include:
