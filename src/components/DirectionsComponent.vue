@@ -55,7 +55,7 @@ const showDirectionsBlock = computed(() => {
   return props.brewery.latitude && props.brewery.longitude
 })
 
-if (showDirectionsBlock.value) {
+if (showDirectionsBlock.value && store.location) {
   getDirections()
 }
 </script>
