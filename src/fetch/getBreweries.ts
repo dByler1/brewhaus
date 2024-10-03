@@ -1,59 +1,55 @@
-import type { Brewery, FetchBreweriesProps, FetchBreweriesResponse } from '@/types/breweries'
+import type {
+  Brewery,
+  FetchBreweriesProps,
+  FetchBreweriesResponse,
+  BreweryMeta
+} from '@/types/breweries'
+import { fetchWrapper } from '@/fetch/fetchWrapper'
+
+const breweryBaseUrl = 'https://api.openbrewerydb.org/v1/breweries/'
 
 export const fetchBreweries = async ({
   location,
   page,
   per_page,
-  by_type
-}: FetchBreweriesProps): Promise<FetchBreweriesResponse | string> => {
+  by_type,
+  by_state
+}: FetchBreweriesProps): Promise<FetchBreweriesResponse> => {
   const locationQuery = location ? `&by_dist=${location.latitude},${location.longitude}` : ''
   const type = by_type ? `&by_type=${by_type}` : ''
+  const state = by_state ? `&by_state=${by_state}` : ''
 
-  const breweriesUrl = `https://api.openbrewerydb.org/v1/breweries/?page=${page}&per_page=${per_page}${locationQuery}${type}`
+  const breweriesUrl = `${breweryBaseUrl}?page=${page}&per_page=${per_page}${locationQuery}${type}${state}`
+  const metaUrl = `${breweryBaseUrl}meta/?page=${page}&per_page=${per_page}${locationQuery}${type}${state}`
 
-  const metaUrl = `https://api.openbrewerydb.org/v1/breweries/meta/?page=${page}&per_page=${per_page}${locationQuery}${type}`
+  try {
+    const breweries = await fetchWrapper<Brewery[]>(breweriesUrl)
+    const meta = await fetchWrapper<BreweryMeta>(metaUrl)
 
-  return new Promise((resolve, reject) => {
-    const breweriesPromise = fetch(breweriesUrl).then((response) => response.json())
-    const metaPromise = fetch(metaUrl).then((response) => response.json())
-
-    Promise.all([breweriesPromise, metaPromise])
-      .then(([breweriesData, metaData]) => {
-        resolve({ breweries: breweriesData, meta: metaData })
-      })
-      .catch(() => {
-        reject('Error fetching breweries')
-      })
-  })
+    return { breweries, meta }
+  } catch (error) {
+    throw new Error('Error fetching breweries')
+  }
 }
 
-export const fetchBrewery = async (id: string): Promise<Brewery | string> => {
-  const url = `https://api.openbrewerydb.org/v1/breweries/${id}`
-  return new Promise((resolve, reject) => {
-    fetch(url)
-      .then(function (response) {
-        response.json().then(function (data) {
-          resolve(data)
-        })
-      })
-      .catch(function () {
-        reject('Error fetching brewery')
-      })
-  })
+export const fetchBrewery = async (id: string): Promise<Brewery> => {
+  const url = `${breweryBaseUrl}${id}`
+  try {
+    const brewery = await fetchWrapper<Brewery>(url)
+
+    return brewery
+  } catch (error) {
+    throw new Error('Error fetching brewery')
+  }
 }
 
-export const fetchSearchBreweries = (query: string): Promise<Brewery[] | string> => {
-  return new Promise((resolve, reject) => {
-    const url = `https://api.openbrewerydb.org/v1/breweries/autocomplete?query=${query}`
+export const fetchSearchBreweries = async (query: string): Promise<Brewery[]> => {
+  const url = `${breweryBaseUrl}autocomplete?query=${query}`
+  try {
+    const breweries = await fetchWrapper<Brewery[]>(url)
 
-    fetch(url)
-      .then(function (response) {
-        response.json().then(function (data) {
-          resolve(data)
-        })
-      })
-      .catch(function () {
-        reject('Error fetching breweries')
-      })
-  })
+    return breweries
+  } catch (error) {
+    throw new Error('Error fetching breweries')
+  }
 }

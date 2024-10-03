@@ -32,16 +32,18 @@ onUnmounted(() => {
 </script>
 
 <template>
-  <ul ref="list" class="b-list">
-    <li v-for="brewery in store.breweries" :key="brewery.id">
-      <span class="title">{{ brewery.name }}</span>
-      <span class="location">{{ brewery.city }}, {{ brewery.city }} {{ brewery.country }}</span>
-      <span>{{ brewery.brewery_type }}</span>
-      <RouterLink class="action" :to="{ name: 'brewery', params: { id: brewery.id } }">
-        More Details
-      </RouterLink>
-    </li>
-  </ul>
+  <section>
+    <ul ref="list" class="b-list">
+      <li v-for="brewery in store.breweries" :key="brewery.id">
+        <span class="title">{{ brewery.name }}</span>
+        <span class="location">{{ brewery.city }}, {{ brewery.city }} {{ brewery.country }}</span>
+        <span>{{ brewery.brewery_type }}</span>
+        <RouterLink class="action" :to="{ name: 'brewery', params: { id: brewery.id } }">
+          More Details
+        </RouterLink>
+      </li>
+    </ul>
+  </section>
 </template>
 
 <style lang="scss" scoped>
@@ -60,8 +62,12 @@ onUnmounted(() => {
     background-color: $light-highlight;
     border-radius: 5px;
     margin-bottom: 10px;
-    max-width: 300px;
+    max-width: unset;
     width: 100%;
+
+    @media screen and (min-width: $sm-breakpoint) {
+      max-width: 300px;
+    }
   }
 
   .title {

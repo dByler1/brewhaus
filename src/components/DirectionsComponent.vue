@@ -4,6 +4,7 @@ import type { Brewery } from '@/types/breweries'
 import { fetchDirections } from '@/fetch/getLocations'
 import { useBreweriesStore } from '@/stores/breweries'
 import LoadingSpinner from './LoadingSpinner.vue'
+import { metersToMiles } from '@/utils/metersToMiles'
 
 const props = defineProps({
   brewery: {
@@ -17,28 +18,27 @@ interface Directions {
 const directions = ref<Directions[]>([])
 const length = ref(0)
 const loading = ref(false)
-const error = ref('')
+const error = ref<unknown>('')
 const store = useBreweriesStore()
 
-function getDirections() {
+async function getDirections() {
   loading.value = true
   error.value = ''
-  fetchDirections({
-    breweryLat: props.brewery.latitude,
-    breweryLong: props.brewery.longitude,
-    userLat: store.location?.latitude ?? 0,
-    userLong: store.location?.longitude ?? 0
-  })
-    .then((data) => {
-      directions.value = data.routes[0].guidance.instructions
-      length.value = data.routes[0].summary.lengthInMeters
+  try {
+    const data = await fetchDirections({
+      breweryLat: props.brewery.latitude,
+      breweryLong: props.brewery.longitude,
+      userLat: store.location?.latitude ?? 0,
+      userLong: store.location?.longitude ?? 0
     })
-    .catch((err) => {
-      error.value = err.message
-    })
-    .finally(() => {
-      loading.value = false
-    })
+
+    directions.value = data.routes[0].guidance.instructions
+    length.value = data.routes[0].summary.lengthInMeters
+  } catch (err) {
+    error.value = err
+  } finally {
+    loading.value = false
+  }
 }
 
 function getLocation() {
@@ -51,6 +51,13 @@ function getLocation() {
   })
 }
 
+const miles = computed(() => {
+  const miles = metersToMiles(length.value)
+  const rounded = Math.round((miles + Number.EPSILON) * 100) / 100
+  const withCommas = rounded.toLocaleString()
+  return withCommas
+})
+
 const showDirectionsBlock = computed(() => {
   return props.brewery.latitude && props.brewery.longitude
 })
@@ -60,19 +67,19 @@ if (showDirectionsBlock.value && store.location) {
 }
 </script>
 <template>
-  <div v-if="showDirectionsBlock" class="directions">
+  <section v-if="showDirectionsBlock" class="directions">
     <button v-if="!store.location" @click="getLocation" class="primary">Get Directions</button>
 
     <div class="instructions" v-if="directions.length > 0">
       <h2>Directions</h2>
-      <p>From your location to {{ props.brewery.name }} it is {{ length }} meters</p>
+      <p>From your location to {{ props.brewery.name }} it is {{ miles }} miles</p>
       <ul>
         <li v-for="step in directions" :key="step.message">{{ step.message }}</li>
       </ul>
     </div>
     <LoadingSpinner class="spinner" v-if="loading" />
     <p v-if="error">{{ error }}</p>
-  </div>
+  </section>
 </template>
 
 <style lang="scss" scoped>

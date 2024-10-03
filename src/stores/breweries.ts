@@ -9,8 +9,8 @@ import { fetchBreweries } from '@/fetch/getBreweries'
 export const useBreweriesStore = defineStore('breweries', () => {
   const breweries = ref<Brewery[]>([])
   const counts = ref({ total: 0, received: 0 })
-  const options = ref({ page: 1, per_page: 50, by_type: '' })
-  const state = ref({ loading: false, error: '' })
+  const options = ref({ page: 1, per_page: 50, by_type: '', by_state: '' })
+  const state = ref<{ loading: boolean; error: unknown }>({ loading: false, error: '' })
   const location = ref<Location | undefined>(undefined)
   const types = ref([
     { label: 'Micro', value: 'micro' },
@@ -25,29 +25,26 @@ export const useBreweriesStore = defineStore('breweries', () => {
     { label: 'Closed', value: 'closed' }
   ])
 
-  function getBreweries() {
+  async function getBreweries() {
     state.value.loading = true
     state.value.error = ''
-    console.log('fetching', breweries.value)
-    fetchBreweries({
-      location: location.value,
-      page: options.value.page,
-      per_page: options.value.per_page,
-      by_type: options.value.by_type
-    })
-      .then((data) => {
-        if (typeof data !== 'string') {
-          breweries.value.push(...data.breweries)
-          counts.value.total = Number(data.meta.total)
-          counts.value.received = breweries.value.length
-        }
+    try {
+      const data = await fetchBreweries({
+        location: location.value,
+        page: options.value.page,
+        per_page: options.value.per_page,
+        by_type: options.value.by_type,
+        by_state: options.value.by_state
       })
-      .catch((error) => {
-        state.value.error = error
-      })
-      .finally(() => {
-        state.value.loading = false
-      })
+
+      breweries.value.push(...data.breweries)
+      counts.value.total = Number(data.meta.total)
+      counts.value.received = breweries.value.length
+    } catch (error) {
+      state.value.error = error
+    } finally {
+      state.value.loading = false
+    }
   }
   function setPage(newPage: number) {
     options.value.page = newPage

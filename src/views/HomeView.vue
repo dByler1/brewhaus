@@ -40,14 +40,14 @@ watch(type, (newValue) => {
 <template>
   <h1>Welcome to BrewHaus</h1>
   <p>Where you can find the best beer in town!</p>
-  <div class="options-container">
+  <section class="options-container">
     <div class="btn-container">
       <button class="primary" @click="getLocation">Find Breweries Near Me</button>
       <button class="primary" @click="getAllBreweries">Get All Breweries</button>
       <VueSelect v-model="type" :options="store.types" placeholder="Search by Type" />
     </div>
     <TypeaheadComponent />
-  </div>
+  </section>
   <BreweryList />
   <p v-if="store.state.error" class="danger">Sorry, there was an error fetching the breweries.</p>
 

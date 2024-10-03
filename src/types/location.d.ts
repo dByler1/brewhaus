@@ -9,3 +9,20 @@ export type GetDirections = {
   userLat: number | string
   userLong: number | string
 }
+
+export type Directions = {
+  routes: [
+    {
+      summary: {
+        lengthInMeters: number
+      }
+      guidance: {
+        instructions: [
+          {
+            message: string
+          }
+        ]
+      }
+    }
+  ]
+}

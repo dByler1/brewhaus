@@ -24,6 +24,7 @@ export interface FetchBreweriesProps {
   per_page: number
   by_type?: string
   location?: Location
+  by_state?: string
 }
 
 export interface BreweryMeta {
